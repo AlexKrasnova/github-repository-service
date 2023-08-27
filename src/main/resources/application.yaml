@@ -1,0 +1,6 @@
+server:
+  port: 8080
+alexkrasnova:
+  github:
+    token: ${GITHUB_TOKEN:}
+    githubUrl: https://api.github.com
