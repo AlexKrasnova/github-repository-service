@@ -4,7 +4,6 @@ import com.alexkrasnova.githubrepositoryservice.client.github.dto.BranchGithubDT
 import com.alexkrasnova.githubrepositoryservice.client.github.dto.CommitGithubDTO;
 import com.alexkrasnova.githubrepositoryservice.client.github.dto.RepositoryGithubDTO;
 import com.alexkrasnova.githubrepositoryservice.client.github.dto.UserGithubDTO;
-import com.alexkrasnova.githubrepositoryservice.dto.RepositoryDTO;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -19,26 +18,26 @@ public class RepositoryMapperTest {
     @Test
     public void shouldReturnRepositoryDTO() {
         // Given
-        String username = "alexandra";
-        String repositoryName = "githubservice";
-        String branchName1 = "branchName1";
-        String branchName2 = "branchName2";
-        String sha1 = "Sha1";
-        String sha2 = "Sha2";
+        var username = "alexandra";
+        var repositoryName = "githubservice";
+        var branchName1 = "branchName1";
+        var branchName2 = "branchName2";
+        var sha1 = "Sha1";
+        var sha2 = "Sha2";
 
-        RepositoryGithubDTO repositoryGithubDTO = new RepositoryGithubDTO(
+        var repositoryGithubDTO = new RepositoryGithubDTO(
                 repositoryName,
                 new UserGithubDTO(username),
                 false
         );
 
-        List<BranchGithubDTO> branchGithubDTOS = List.of(
+        var branchGithubDTOS = List.of(
                 new BranchGithubDTO(branchName1, new CommitGithubDTO(sha1)),
                 new BranchGithubDTO(branchName2, new CommitGithubDTO(sha2))
         );
 
         // When
-        RepositoryDTO actual = repositoryMapper.mapToRepositoryDTO(repositoryGithubDTO, branchGithubDTOS);
+        var actual = repositoryMapper.mapToRepositoryDTO(repositoryGithubDTO, branchGithubDTOS);
 
         // Then
         assertThat(actual.name()).isEqualTo(repositoryName);

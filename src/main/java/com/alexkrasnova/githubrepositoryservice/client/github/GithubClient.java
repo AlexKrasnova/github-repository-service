@@ -33,8 +33,8 @@ public class GithubClient {
 
     public List<BranchGithubDTO> findBranchesByRepositoryAndUser(String username, String repositoryName) {
         try {
-            BranchGithubDTO[] response = restTemplate.getForObject(BRANCHES_URL, BranchGithubDTO[].class, username, repositoryName);
-            return Arrays.asList(response);
+            var branches = restTemplate.getForObject(BRANCHES_URL, BranchGithubDTO[].class, username, repositoryName);
+            return Arrays.asList(branches);
         } catch (HttpClientErrorException e) {
             if (e.getStatusCode().is5xxServerError()) {
                 throw new GithubUnavailableException(e);

@@ -7,7 +7,6 @@ import com.alexkrasnova.githubrepositoryservice.dto.RepositoryDTO;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 public class RepositoryMapper {
@@ -17,7 +16,7 @@ public class RepositoryMapper {
                 repository.name(),
                 repository.owner().login(),
                 branches.stream().map(this::mapToBranchDTO)
-                        .collect(Collectors.toList())
+                        .toList()
         );
     }
 

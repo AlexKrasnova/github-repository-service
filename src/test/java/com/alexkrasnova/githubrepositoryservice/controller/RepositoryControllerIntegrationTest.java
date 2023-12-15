@@ -25,7 +25,6 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.UnsupportedEncodingException;
-import java.lang.reflect.Field;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
@@ -53,7 +52,7 @@ public class RepositoryControllerIntegrationTest {
     @BeforeEach
     public void setUp() throws NoSuchFieldException, IllegalAccessException {
         //It's impossible to use MockBean, because dependency of githubClient is RestTemplateBuilder
-        Field restTemplateField
+        var restTemplateField
                 = GithubClient.class.getDeclaredField("restTemplate");
         restTemplateField.setAccessible(true);
         restTemplateField.set(githubClient, restTemplate);
@@ -62,22 +61,22 @@ public class RepositoryControllerIntegrationTest {
     @Test
     public void shouldReturnRepositoriesWhenUserExists() throws Exception {
         // Given
-        String username = "alexandra";
-        String repositoryName1 = "githubservice";
-        String repositoryName2 = "taxiservice";
-        String branchName1 = "main";
-        String branchSha1 = "sha1";
-        String branchName2 = "develop";
-        String branchSha2 = "sha1";
-        String branchName3 = "master";
-        String branchSha3 = "sha3";
+        var username = "alexandra";
+        var repositoryName1 = "githubservice";
+        var repositoryName2 = "taxiservice";
+        var branchName1 = "main";
+        var branchSha1 = "sha1";
+        var branchName2 = "develop";
+        var branchSha2 = "sha1";
+        var branchName3 = "master";
+        var branchSha3 = "sha3";
 
-        RepositoryGithubDTO repository1 = new RepositoryGithubDTO(
+        var repository1 = new RepositoryGithubDTO(
                 repositoryName1,
                 new UserGithubDTO(username),
                 false
         );
-        RepositoryGithubDTO repository2 = new RepositoryGithubDTO(
+        var repository2 = new RepositoryGithubDTO(
                 repositoryName2,
                 new UserGithubDTO(username),
                 false
@@ -87,15 +86,15 @@ public class RepositoryControllerIntegrationTest {
                 .when(restTemplate)
                 .getForObject("/users/{username}/repos", RepositoryGithubDTO[].class, username);
 
-        BranchGithubDTO branch1 = new BranchGithubDTO(
+        var branch1 = new BranchGithubDTO(
                 branchName1,
                 new CommitGithubDTO(branchSha1)
         );
-        BranchGithubDTO branch2 = new BranchGithubDTO(
+        var branch2 = new BranchGithubDTO(
                 branchName2,
                 new CommitGithubDTO(branchSha2)
         );
-        BranchGithubDTO branch3 = new BranchGithubDTO(
+        var branch3 = new BranchGithubDTO(
                 branchName3,
                 new CommitGithubDTO(branchSha3)
         );
@@ -123,7 +122,7 @@ public class RepositoryControllerIntegrationTest {
         List<RepositoryDTO> actual = getResponse(result, new TypeReference<>() {
         });
         assertThat(actual.size()).isEqualTo(2);
-        RepositoryDTO actualRepositoryOne = actual.get(0);
+        var actualRepositoryOne = actual.get(0);
         assertThat(actualRepositoryOne.name()).isEqualTo(repositoryName1);
         assertThat(actualRepositoryOne.ownerLogin()).isEqualTo(username);
         assertThat(actualRepositoryOne.branches().size()).isEqualTo(2);
@@ -132,7 +131,7 @@ public class RepositoryControllerIntegrationTest {
         assertThat(actualRepositoryOne.branches().get(1).name()).isEqualTo(branchName2);
         assertThat(actualRepositoryOne.branches().get(1).lastCommitSha()).isEqualTo(branchSha2);
 
-        RepositoryDTO actualRepositoryTwo = actual.get(1);
+        var actualRepositoryTwo = actual.get(1);
         assertThat(actualRepositoryTwo.name()).isEqualTo(repositoryName2);
         assertThat(actualRepositoryTwo.ownerLogin()).isEqualTo(username);
         assertThat(actualRepositoryTwo.branches().size()).isEqualTo(1);
@@ -143,7 +142,7 @@ public class RepositoryControllerIntegrationTest {
     @Test
     public void shouldReturn404WhenUserDoesNotExist() throws Exception {
         // Given
-        String username = "pirog";
+        var username = "pirog";
         doThrow(new HttpClientErrorException(NOT_FOUND))
                 .when(restTemplate)
                 .getForObject("/users/{username}/repos", RepositoryGithubDTO[].class, username);
@@ -160,7 +159,7 @@ public class RepositoryControllerIntegrationTest {
                 .andReturn();
 
         // Then
-        ErrorDTO actual = getResponse(result, ErrorDTO.class);
+        var actual = getResponse(result, ErrorDTO.class);
         assertThat(actual.status()).isEqualTo(404);
         assertThat(actual.message()).isEqualTo("User not found.");
     }
@@ -168,7 +167,7 @@ public class RepositoryControllerIntegrationTest {
     @Test
     public void shouldReturn406WhenGivenXmlAcceptHeader() throws Exception {
         // Given
-        String username = "pirog";
+        var username = "pirog";
         doThrow(new HttpClientErrorException(NOT_FOUND))
                 .when(restTemplate)
                 .getForObject("/users/{username}/repos", RepositoryGithubDTO[].class, username);
@@ -185,7 +184,7 @@ public class RepositoryControllerIntegrationTest {
                 .andReturn();
 
         // Then
-        ErrorDTO actual = getResponse(result, ErrorDTO.class);
+        var actual = getResponse(result, ErrorDTO.class);
         assertThat(actual.status()).isEqualTo(406);
         assertThat(actual.message()).isEqualTo("Unsupported 'Accept' header. Must accept 'application/json'.");
     }

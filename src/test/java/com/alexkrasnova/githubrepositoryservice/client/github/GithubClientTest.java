@@ -76,7 +76,7 @@ public class GithubClientTest {
     @Test
     public void shouldThrowUserNotFoundExceptionWhenGithubResponseIs404() {
         // Given
-        String username = "alexandra";
+        var username = "alexandra";
         doThrow(new HttpClientErrorException(NOT_FOUND))
                 .when(restTemplate)
                 .getForObject("/users/{username}/repos", RepositoryGithubDTO[].class, username);
@@ -90,7 +90,7 @@ public class GithubClientTest {
     @Test
     public void findRepositoriesShouldThrowGithubUnavailableExceptionWhenGithubResponseIs500() {
         // Given
-        String username = "alexandra";
+        var username = "alexandra";
         doThrow(new HttpClientErrorException(INTERNAL_SERVER_ERROR))
                 .when(restTemplate)
                 .getForObject("/users/{username}/repos", RepositoryGithubDTO[].class, username);
@@ -104,17 +104,17 @@ public class GithubClientTest {
     @Test
     public void shouldReturnBranchesWhenGithubResponseIs200() {
         // Given
-        String username = "alexandra";
-        String repositoryName = "taxiservice";
-        String branchName1 = "main";
-        String branchSha1 = "sha1";
-        String branchName2 = "develop";
-        String branchSha2 = "sha1";
-        BranchGithubDTO branch1 = new BranchGithubDTO(
+        var username = "alexandra";
+        var repositoryName = "taxiservice";
+        var branchName1 = "main";
+        var branchSha1 = "sha1";
+        var branchName2 = "develop";
+        var branchSha2 = "sha1";
+        var branch1 = new BranchGithubDTO(
                 branchName1,
                 new CommitGithubDTO(branchSha1)
         );
-        BranchGithubDTO branch2 = new BranchGithubDTO(
+        var branch2 = new BranchGithubDTO(
                 branchName2,
                 new CommitGithubDTO(branchSha2)
         );
@@ -124,7 +124,7 @@ public class GithubClientTest {
                 .getForObject("/repos/{username}/{repositoryName}/branches", BranchGithubDTO[].class, username, repositoryName);
 
         // When
-        List<BranchGithubDTO> actual = githubClient.findBranchesByRepositoryAndUser(username, repositoryName);
+        var actual = githubClient.findBranchesByRepositoryAndUser(username, repositoryName);
 
         // Then
         assertThat(actual.size()).isEqualTo(2);
@@ -135,8 +135,8 @@ public class GithubClientTest {
     @Test
     public void findBranchesShouldThrowGithubUnavailableExceptionWhenGithubResponseIs500() {
         // Given
-        String username = "alexandra";
-        String repositoryName = "taxiservice";
+        var username = "alexandra";
+        var repositoryName = "taxiservice";
         doThrow(new HttpClientErrorException(INTERNAL_SERVER_ERROR))
                 .when(restTemplate)
                 .getForObject("/repos/{username}/{repositoryName}/branches", BranchGithubDTO[].class, username, repositoryName);

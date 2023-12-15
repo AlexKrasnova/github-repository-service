@@ -1,12 +1,10 @@
 package com.alexkrasnova.githubrepositoryservice.controller;
 
-import com.alexkrasnova.githubrepositoryservice.dto.error.ErrorDTO;
 import com.alexkrasnova.githubrepositoryservice.exception.GithubUnavailableException;
 import com.alexkrasnova.githubrepositoryservice.exception.UserNotFoundException;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpMediaTypeNotAcceptableException;
 
 import java.util.stream.Stream;
@@ -30,7 +28,7 @@ public class CommonExceptionHandlerTest {
     @ParameterizedTest
     public void shouldReturnAppropriateResponse(Exception e, int statusCode, String message) {
         // When
-        ResponseEntity<ErrorDTO> actual = commonExceptionHandler.handleException(e, null);
+        var actual = commonExceptionHandler.handleException(e, null);
 
         // Then
         assertThat(actual.getStatusCode().value()).isEqualTo(statusCode);
